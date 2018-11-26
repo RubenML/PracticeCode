@@ -1,0 +1,13 @@
+{
+  "name": "express-basic",
+  "version": "0.0.1",
+  "description": "this project is for experimenting",
+  "author": "Ruben <rumalo1791@gmail.com>",
+  "devDependencies": {
+    "express": "4.14.0",
+    "body-parser": "1.16.0",
+    "gulp": "^3.9.1",
+    "icon-font-generator": "1.1.1",
+    "child_process": "^1.0.2"
+  }
+}
