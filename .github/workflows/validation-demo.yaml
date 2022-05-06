@@ -2,6 +2,10 @@ name: Manifest and Kubernetes Object Validation
 on: 
   workflow_dispatch:
     inputs:
+       yamllint-output:
+          description: 'Define output style for yamlint'
+          required: true
+          type: string
        confirm:
           description: 'OK?'
           required: true
@@ -17,5 +21,8 @@ jobs:
       - name: List files in the repository
         run: ls
       
+      - name: yamlint config output
+        run: yamlint --format ${{ github.event.inputs.yamllint-output }}
+
       - name: yamlint validation
         run: yamllint .
