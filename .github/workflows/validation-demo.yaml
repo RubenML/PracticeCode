@@ -23,3 +23,9 @@ jobs:
       
       - name: yamlint validation
         run: yamllint --format ${{ github.event.inputs.yamllint-output }} .
+
+      - name: kubelinter validation
+        run: kube-linter lint .
+
+      - name: kubeval validation
+        run: kubeval .
