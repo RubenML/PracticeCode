@@ -1,15 +1,15 @@
 name: Manifest and Kubernetes Object Validation
-on: 
+on:
   workflow_dispatch:
     inputs:
-       yamllint-output:
-          description: 'Define output style for yamlint'
-          required: true
-          type: string
-       confirm:
-          description: 'OK?'
-          required: true
-          type: boolean
+      yamllint-output:
+         description: 'Define output style for yamlint'
+         required: true
+         type: string
+      confirm:
+         description: 'OK?'
+         required: true
+         type: boolean
 jobs:
   validate:
     runs-on: ubuntu-latest
@@ -17,15 +17,15 @@ jobs:
     steps:
       - name: Checkout repository code
         uses: actions/checkout@v3
-      
-      - name: List files in the repository
-        run: ls
-      
+
       - name: yamlint validation
         run: yamllint --format ${{ github.event.inputs.yamllint-output }} .
+        continue-on-error: true
 
       - name: kubelinter validation
         run: kube-linter lint .
+        continue-on-error: true
 
       - name: kubeval validation
         run: kubeval .
+        continue-on-error: true
