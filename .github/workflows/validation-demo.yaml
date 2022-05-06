@@ -23,6 +23,9 @@ jobs:
       
       - name: List all files
         run: ls
+      
+      - name: Get Files Changed
+        run: git diff --name-only ${{ github.event.before }} ${{ github.sha }} | cut -d/ -f1 | sort -u
 
       - name: yamlint validation
         run: yamllint --format ${{ github.event.inputs.yamllint-output }} .
@@ -33,5 +36,5 @@ jobs:
         continue-on-error: true
 
       - name: kubeval validation
-        run: kubeval .
+        run: kubeval ./*/*/*
         continue-on-error: true
