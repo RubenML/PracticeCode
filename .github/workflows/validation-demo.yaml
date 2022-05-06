@@ -26,7 +26,7 @@ jobs:
       
       - name: Get Files Changed
         id: getfile
-        run: echo "::set-output name=files::$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | cut -d/ -f1 | sort -u)"
+        run: echo "::set-output name=files::$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | xargs)"
 
       - name: Print files
         run: echo ${{ steps.getfile.outputs.files }}
