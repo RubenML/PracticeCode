@@ -17,6 +17,8 @@ jobs:
     steps:
       - name: Checkout repository code
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Verify current directory
         run: pwd
@@ -24,12 +26,7 @@ jobs:
       - name: List all files
         run: ls
       
-      - name: Get Files Changed
-        id: getfile
-        run: echo "::set-output name=files::$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | xargs)"
-
-      - name: Print files
-        run: echo ${{ steps.getfile.outputs.files }}
+      - run: echo "CHANGED_FILES=$(git diff --name-only ${{ github.event.before }}..${{ github.event.after }})" >> $GITHUB_ENV
 
       - name: yamlint validation
         run: yamllint --format ${{ github.event.inputs.yamllint-output }} .
