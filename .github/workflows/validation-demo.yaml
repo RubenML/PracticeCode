@@ -36,5 +36,5 @@ jobs:
         continue-on-error: true
 
       - name: kubeval validation
-        run: kubeval ./*/*/*
+        run: kubeval ./*/*/*/*/*
         continue-on-error: true
