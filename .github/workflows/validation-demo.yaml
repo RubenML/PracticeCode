@@ -22,7 +22,7 @@ jobs:
         run: ls
       
       - name: yamlint config output
-        run: yamlint --format ${{ github.event.inputs.yamllint-output }}
+        run: yamllint --format ${{ github.event.inputs.yamllint-output }}
 
       - name: yamlint validation
         run: yamllint .
