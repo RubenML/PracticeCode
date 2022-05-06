@@ -25,7 +25,11 @@ jobs:
         run: ls
       
       - name: Get Files Changed
-        run: git diff --name-only ${{ github.event.before }} ${{ github.sha }} | cut -d/ -f1 | sort -u
+        id: getfile
+        run: echo "::set-output name=files::$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | cut -d/ -f1 | sort -u)"
+
+      - name: Print files
+        run: echo ${{ steps.getfile.outputs.files }}
 
       - name: yamlint validation
         run: yamllint --format ${{ github.event.inputs.yamllint-output }} .
