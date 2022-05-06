@@ -1,0 +1,18 @@
+name: Manifest and Kubernetes Object Validation
+on: 
+  workflow_dispatch:
+    inputs:
+       confirm:
+          description: 'OK?'
+          required: true
+          type: boolean
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    container: deck15/kubeval-tools:latest
+    steps:
+      - name: Checkout repository code
+        uses: actions/checkout@v3
+      
+      - name: List files in the repository
+        run: ls ${{ github.workspace }}
