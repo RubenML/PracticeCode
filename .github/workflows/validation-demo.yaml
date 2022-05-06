@@ -16,3 +16,6 @@ jobs:
       
       - name: List files in the repository
         run: ls
+      
+      - name: yamlint validation
+        run: yamlint .
