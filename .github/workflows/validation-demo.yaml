@@ -1,20 +1,15 @@
 name: Manifest and Kubernetes Object Validation
 on:
   [push]
-jobs:
-  get-repo:
+jobs: 
+  validate:
     runs-on: ubuntu-latest
+    container: deck15/kubeval-tools:latest
     steps:
       - name: Checkout repository code
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-
-      - name: Get file changes
-        run: git diff --name-only ${{ github.event.before }} ${{ github.event.after }}
-
-      - name: Extra step
-        run: git diff --name-only ${{ github.event.before }} ${{ github.sha }}
 
       - name: Set output
         id: getdiff
@@ -22,18 +17,13 @@ jobs:
 
       - name: Final step
         run: echo "${{ steps.getdiff.outputs.diff }}"
-      
-  validate:
-    needs: get-repo
-    runs-on: ubuntu-latest
-    container: deck15/kubeval-tools:latest
-    steps:
+
       - name: yamlint validation
-        run: yamllint --format colored .
+        run: yamllint --format colored ${{ steps.getdiff.outputs.diff }}
         continue-on-error: true
 
       - name: kubelinter validation
-        run: kube-linter lint .
+        run: kube-linter lint ${{ steps.getdiff.outputs.diff }}
         continue-on-error: true
 
       - name: kubeval validation
