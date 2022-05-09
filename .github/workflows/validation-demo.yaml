@@ -11,12 +11,9 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set output
+      - name: Get changed files
         id: getdiff
-        run: echo "::set-output name=diff::$(git diff --name-only ${{ github.event.before }} ${{ github.event.after }} | sed ':a;N;$!ba;s/\n/ /g')"
-
-      - name: Final step
-        run: echo "${{ steps.getdiff.outputs.diff }}"
+        run: echo "::set-output name=diff::$(git diff --name-only ${{ github.event.before }} ${{ github.event.after }} "*.yaml" "*.yml" | sed ':a;N;$!ba;s/\n/ /g')"
 
       - name: yamlint validation
         run: yamllint --format colored ${{ steps.getdiff.outputs.diff }}
