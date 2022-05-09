@@ -16,13 +16,17 @@ jobs:
       - name: Extra step
         run: git diff --name-only ${{ github.event.before }} ${{ github.sha }}
 
+      - name: Set output
+        id: getdiff
+        run: echo "::set-output name=diff::$(git diff --name-only ${{ github.event.before }} ${{ github.event.after }} | | sed ':a;N;$!ba;s/\n/%0A/g')"
+
   validate:
     needs: get-repo
     runs-on: ubuntu-latest
     container: deck15/kubeval-tools:latest
     steps:
       - name: yamlint validation
-        run: yamllint --format ${{ github.event.inputs.yamllint-output }} .
+        run: yamllint --format colored .
         continue-on-error: true
 
       - name: kubelinter validation
