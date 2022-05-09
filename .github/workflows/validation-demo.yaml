@@ -20,6 +20,9 @@ jobs:
         id: getdiff
         run: echo "::set-output name=diff::$(git diff --name-only ${{ github.event.before }} ${{ github.event.after }} | sed ':a;N;$!ba;s/\n/%0A/g')"
 
+      - name: Final step
+        run: echo "${{ steps.getdiff.outputs.diff }}"
+      
   validate:
     needs: get-repo
     runs-on: ubuntu-latest
