@@ -20,6 +20,9 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Get file changes
+        run: git diff --name-only ${{ github.event.before }} ${{ github.event.after }}
+
       - name: Verify current directory
         run: pwd
       
