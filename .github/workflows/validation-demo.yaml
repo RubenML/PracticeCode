@@ -23,7 +23,7 @@ jobs:
         run: git diff --name-only ${{ github.event.before }} ${{ github.event.after }}
 
   validate:
-    needs: cd-repo
+    needs: get-repo
     runs-on: ubuntu-latest
     container: deck15/kubeval-tools:latest
     steps:
