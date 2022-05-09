@@ -1,6 +1,9 @@
 name: Manifest and Kubernetes Object Validation
 on:
-  [push]
+  push:
+    paths:
+      - '**.yaml'
+      - '**.yml'
 jobs: 
   validate:
     runs-on: ubuntu-latest
