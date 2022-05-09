@@ -1,15 +1,6 @@
 name: Manifest and Kubernetes Object Validation
 on:
-  workflow_dispatch:
-    inputs:
-      yamllint-output:
-         description: 'Define output style for yamlint'
-         required: true
-         type: string
-      confirm:
-         description: 'OK?'
-         required: true
-         type: boolean
+  [push]
 jobs:
   get-repo:
     runs-on: ubuntu-latest
@@ -21,6 +12,9 @@ jobs:
 
       - name: Get file changes
         run: git diff --name-only ${{ github.event.before }} ${{ github.event.after }}
+
+      - name: Extra step
+        run: git diff --name-only ${{ github.event.before }} ${{ github.sha }}
 
   validate:
     needs: get-repo
