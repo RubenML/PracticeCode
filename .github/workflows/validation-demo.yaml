@@ -11,19 +11,25 @@ jobs:
     steps:
       - name: Checkout repository code
         uses: actions/checkout@v3
-      #  with:
-      #    fetch-depth: 0
+        with:
+          fetch-depth: 0
       
+
+      - name: Get changed files
+        id: getdiff
+        run: echo "::set-output name=diff::$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.sha }} "*.yaml" "*.yml" | sed ':a;N;$!ba;s/\n/ /g')"
+
+      - run: echo "${{ steps.getdiff.outputs.diff }}"
       #- name: Get changed files
       #  id: getdiff
       #  run: echo "::set-output name=diff::$(git diff --name-only ${{ github.event.before }} ${{ github.event.after }} "*.yaml" "*.yml" | sed ':a;N;$!ba;s/\n/ /g')"
       
-      - name: Get specific changed files
-        id: changed-files-specific
-        uses: tj-actions/changed-files@v19
-        with:
-          files: |
-            *.yaml
+      #- name: Get specific changed files
+      #  id: changed-files-specific
+      #  uses: tj-actions/changed-files@v19
+      #  with:
+      #    files: |
+      #      *.yaml
       
       #- name: get files changed
       #  uses: jitterbit/get-changed-files@v1
