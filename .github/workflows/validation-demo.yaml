@@ -23,8 +23,8 @@ jobs:
         uses: tj-actions/changed-files@v19
         with:
           files: |
-            **.yaml
-            **.yml
+            '**.yaml'
+            '**.yml'
       
       #- name: get files changed
       #  uses: jitterbit/get-changed-files@v1
