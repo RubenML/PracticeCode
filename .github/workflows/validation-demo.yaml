@@ -14,21 +14,19 @@ jobs:
       #  with:
       #    fetch-depth: 0
 
+      - name: Install jq tool
+        run: |
+          sudo apt-get update
+          sudo apt-get install jq
+      
       #- name: Get changed files
       #  id: getdiff
       #  run: echo "::set-output name=diff::$(git diff --name-only ${{ github.event.before }} ${{ github.event.after }} "*.yaml" "*.yml" | sed ':a;N;$!ba;s/\n/ /g')"
       
-      - name: Extract names for changed files
-        uses: sergeysova/jq-action@v2
-        id: filename
-        with:
-          cmd: jq -r '.[] | .filename
-
       - name: list files
-        id: getdiff
         run: |
           URL="https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${{ github.event.pull_request.number }}/files"
-          FILES=$(curl -s -X GET -G $URL | ${{ steps.filename.outputs.value }} )
+          FILES=$(curl -s -X GET -G $URL | jq -r '.[] | .filename')
           echo $FILES
       
       #- name: get files changed
