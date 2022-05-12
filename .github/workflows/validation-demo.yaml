@@ -18,21 +18,27 @@ jobs:
       #  id: getdiff
       #  run: echo "::set-output name=diff::$(git diff --name-only ${{ github.event.before }} ${{ github.event.after }} "*.yaml" "*.yml" | sed ':a;N;$!ba;s/\n/ /g')"
       
-      #- name: list files
-      #  id: getdiff
-      #  run: |
-      #    URL="https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${{ github.event.pull_request.number }}/files"
-      #    FILES=$(curl -s -X GET -G $URL | jq -r '.[] | .filename')
-      #    echo $FILES
+      - name: Extract names for changed files
+        uses: sergeysova/jq-action@v2
+        id: filename
+        with:
+          cmd: jq -r '.[] | .filename
+
+      - name: list files
+        id: getdiff
+        run: |
+          URL="https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${{ github.event.pull_request.number }}/files"
+          FILES=$(curl -s -X GET -G $URL | ${{ steps.filename.outputs.value }} )
+          echo $FILES
       
-      - name: get files changed
-        uses: jitterbit/get-changed-files@v1
-        id: files
+      #- name: get files changed
+      #  uses: jitterbit/get-changed-files@v1
+      #  id: files
       
-      - run: |
-           for changed_file in ${{ steps.files.outputs.all }}; do
-              echo "Do something with this ${changed_file}."
-           done
+      #- run: |
+      #     for changed_file in ${{ steps.files.outputs.all }}; do
+      #        echo "Do something with this ${changed_file}."
+      #     done
 
       #- name: yamllint validation
       #  run: yamllint --format colored ${{ steps.getdiff.outputs.diff }}
